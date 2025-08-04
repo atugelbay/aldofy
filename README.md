@@ -28,7 +28,7 @@
 1. Установите Go 1.18+
 2. Клонируйте репозиторий:
    ```sh
-   git clone <repo-url>
+   git clone [<repo-url>](https://github.com/atugelbay/aldofy.git)
    cd groupie-tracker
    ```
 3. Запустите сервер:
