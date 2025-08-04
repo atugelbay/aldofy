@@ -36,7 +36,7 @@ func main() {
 	if port == "" {
     		port = "8080"
 	}
-	http.ListenAndServe(":" + port, ...,)
+	http.ListenAndServe(":" + port, ...)
 }
 
 func rootHandler(w http.ResponseWriter, r *http.Request) {
