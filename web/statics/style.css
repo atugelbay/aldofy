@@ -1,0 +1,668 @@
+/* Анимация переворота для бейджа исполнителя */
+.record-sleeve .album-badge {
+  transition: opacity 0.6s, transform 0.6s;
+  opacity: 1;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+.record-sleeve:hover .album-badge {
+  opacity: 0;
+  transform: rotateY(180deg) scale(0.8);
+  pointer-events: none;
+}
+/* Бейдж с именем исполнителя на карточке альбома */
+.album-badge {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1db954;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1em;
+  padding: 4px 16px;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  z-index: 10;
+  pointer-events: none;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+/* --- MODALKA: адаптивные стили --- */
+.modal-content {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  background: linear-gradient(135deg, #1e1e1e, #232323 80%);
+  padding: 2.5vw 2vw 2vw 2.5vw;
+  border-radius: 18px;
+  width: 92vw;
+  max-width: 650px;
+  height: 88vh;
+  max-height: 650px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.85);
+  transform: scale(1);
+  transition: transform 0.4s cubic-bezier(.4,2,.6,1), opacity 0.4s cubic-bezier(.4,2,.6,1);
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.modal-left {
+  flex: 1 1 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 10px;
+  min-width: 160px;
+  max-width: 220px;
+}
+.modal-left img {
+  width: 100%;
+  max-width: 180px;
+  border-radius: 10px;
+  box-shadow: 0 5px 18px rgba(0,0,0,0.55);
+  object-fit: cover;
+}
+
+.modal-right {
+  flex: 2 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  max-height: 100%;
+  padding-left: 2vw;
+  scrollbar-width: thin;
+  scrollbar-color: #1db954 #232323;
+}
+.modal-right::-webkit-scrollbar {
+  width: 7px;
+}
+.modal-right::-webkit-scrollbar-thumb {
+  background: #1db954;
+  border-radius: 6px;
+}
+.modal-right::-webkit-scrollbar-track {
+  background: #232323;
+}
+
+.modal-info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em 0;
+  margin-bottom: 1.1rem;
+}
+.modal-info-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  margin-bottom: 2px;
+}
+.modal-info-label {
+  font-weight: 600;
+  color: #1db954;
+  font-size: 1.04em;
+  min-width: 110px;
+  text-align: left;
+  padding-right: 8px;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+.modal-info-value {
+  font-size: 1.04em;
+  color: #fff;
+  word-break: break-word;
+  padding-left: 2px;
+  line-height: 1.4;
+}
+
+/* Ensure modal fields have correct styles */
+#modal-members, #modal-album, #modal-date {
+  font-size: 1.05em;
+  color: #fff;
+  margin-bottom: 0;
+}
+
+/* Modal section titles */
+.modal-section-title {
+  font-weight: 600;
+  color: #1db954;
+  margin-bottom: 0.2em;
+  font-size: 1.04em;
+  letter-spacing: 0.01em;
+}
+
+/* Modal section spacing */
+.modal-section {
+  margin-bottom: 0.7em;
+}
+
+/* Modal lists (dates, relations, locations) as badges */
+#modal-dates, #modal-locations {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 8px;
+  list-style: none;
+  padding-left: 0;
+  margin-left: 0;
+  overflow-x: hidden;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+#modal-events {
+  list-style: none;
+  padding-left: 0;
+  margin-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#modal-events li {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 0.2em;
+}
+
+#modal-events .event-location {
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 4px;
+  background: none;
+  padding: 0;
+  min-width: 0;
+  box-shadow: none;
+}
+
+#modal-events .event-dates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 8px;
+  list-style: none;
+  padding-left: 0;
+  margin-left: 0;
+  max-width: 100%;
+}
+
+#modal-events .event-dates li {
+  display: flex;
+  align-items: center;
+  border-radius: 7px;
+  padding: 5px 12px;
+  margin: 0;
+  min-width: 54px;
+  font-size: 0.98em;
+  background: #232323;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  line-height: 1.2;
+  word-break: break-word;
+  white-space: normal;
+}
+
+#modal-dates li, #modal-locations li {
+  display: flex;
+  align-items: center;
+  border-radius: 7px;
+  padding: 5px 12px;
+  margin: 0;
+  min-width: 54px;
+  font-size: 0.98em;
+  background: #232323;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  line-height: 1.2;
+  word-break: break-word;
+  white-space: normal;
+}
+
+body {
+  font-family: sans-serif;
+  background-color: #121212;
+  color: #ffffff;
+  margin: 0;
+}
+
+.navbar {
+  text-align: center;
+  padding: 1rem;
+  background-color: #1db954;
+}
+
+.content {
+  padding: 2rem;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 2rem;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 2980px;
+}
+
+.card {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.card:hover .record-sleeve {
+  background-color: #333;
+}
+
+.card img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+  transition: transform 0.5s ease-in-out;
+}
+
+.card:hover img {
+  transform: rotate(360deg);
+}
+
+.card-info {
+  position: absolute;
+  bottom: -20px;
+  background-color: rgba(0, 0, 0, 0.8);
+  width: 100%;
+  padding: 0.5rem;
+  text-align: center;
+  color: #ffffff;
+  transition: bottom 0.3s ease-in-out;
+}
+
+.card:hover .card-info {
+  bottom: 0;
+}
+
+.modal {
+  display: flex; /* Показываем модальное окно */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  justify-content: center;
+  align-items: center;
+  opacity: 0; /* Начальная прозрачность */
+  visibility: hidden; /* Скрываем модалку */
+  transition: opacity 0.4s ease, visibility 0.4s ease; /* Плавная анимация */
+}
+
+.modal.show {
+  opacity: 1; /* Появление модалки */
+  visibility: visible; /* Делаем модалку видимой */
+}
+
+.modal-content {
+  display: flex; /* Располагаем блоки в ряд */
+  background: linear-gradient(135deg, #1e1e1e, #2c2c2c); /* Темный градиентный фон */
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 800px;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7); /* Глубокая тень */
+  transform: scale(0.8); /* Начальный масштаб */
+  transition: transform 0.4s ease, opacity 0.4s ease; /* Плавное увеличение и появление */
+  color: #ffffff; /* Белый текст */
+  min-width: 0;
+}
+
+.modal-left {
+  flex: 1; /* Занимает половину ширины */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-left img {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* Тень для изображения */
+}
+
+.modal-right {
+  flex: 2; /* Занимает оставшуюся ширину */
+  padding-left: 20px;
+  min-width: 0;
+}
+
+.modal-right h3 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #1db954; /* Зеленый акцент для заголовка */
+}
+
+.modal-right p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+
+.modal-content img {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* Тень для изображения */
+}
+
+.close-btn {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #1db954;
+  border: none;
+  border-radius: 4px;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease-in-out;
+  position: static;
+  display: block;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.close-btn:hover {
+  background-color: #17a44c;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #ffffff;
+  transition: color 0.3s ease;
+}
+
+.close:hover {
+  color: #1db954;
+}
+
+h1, h2, h3 {
+  font-family: 'Arial', sans-serif;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+p {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.record-sleeve {
+  width: 300px;
+  height: 300px;
+  background: linear-gradient(135deg, #161414, #1b1b1b); /* Градиентный фон */
+  border-radius: 5px;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out; /* Добавляем плавность */
+  transform-style: preserve-3d; /* Включаем 3D-эффект */
+}
+
+.record-sleeve:hover {
+  transform: rotateY(180deg); /* Переворот карточки */
+}
+
+.album-art, .vinyl {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden; /* Скрываем обратную сторону */
+  transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out; /* Плавное появление и исчезновение */
+}
+
+.album-art {
+  background-size: cover; /* Изображение заполняет всё пространство */
+  background-position: center; /* Центрирование изображения */
+  background-repeat: no-repeat; /* Убираем повторение изображения */
+  opacity: 1; /* Начальная прозрачность */
+  transform: scale(1); /* Начальный масштаб */
+}
+
+.vinyl {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, #080808 10%, transparent 61%), 
+              url('/statics/vinyl-texture.png'); /* Путь к текстуре */
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%;
+  top: 50%; /* Центрирование по вертикали */
+  left: 50%; /* Центрирование по горизонтали */
+  transform: translate(-50%, -50%) scale(1); /* Устанавливаем одинаковый масштаб */
+  opacity: 0; /* Начальная прозрачность */
+  transition: opacity 0.6s ease-in-out; /* Убираем изменение масштаба */
+  z-index: 1; /* Убедитесь, что текстура выше других элементов */
+}
+
+.record-sleeve:hover .album-art {
+  opacity: 0; /* Исчезновение обложки */
+  transform: scale(0.8); /* Уменьшение размера */
+}
+
+.record-sleeve:hover .vinyl {
+  transform: translate(-50%, -50%) scale(1); /* Оставляем масштаб неизменным */
+  opacity: 1; /* Появление винила */
+}
+
+.album-title {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.artist-name {
+  font-size: 1.1em;
+  margin-bottom: 10px;
+}
+
+.tracklist {
+  font-size: 0.8em;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tracklist li {
+  margin-bottom: 3px;
+}
+
+.vinyl-center {
+  position: absolute;
+  width: 80px; /* Размер изображения в центре */
+  height: 80px;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  object-fit: cover; /* Убедитесь, что изображение заполняет круг */
+  background-color: #fff; /* Белый фон для центра */
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5); /* Тень для реалистичности */
+  z-index: 2; /* Центр выше текстуры */
+}
+
+.record-sleeve:hover .album-art {
+  transform: rotate(360deg) scale(0);
+  opacity: 0;
+}
+
+.record-sleeve:hover .vinyl {
+  transform: scale(1) rotate(360deg);
+  opacity: 1;
+  animation: spin 7s linear infinite; /* Добавляем анимацию вращения */
+}
+
+.card:hover .vinyl {
+  transform: translate(-50%, -50%) scale(1) rotate(360deg);
+  animation: spin 7s linear infinite;
+}
+
+.modal.show .vinyl {
+  transform: translate(-50%, -50%) scale(1) rotate(360deg);
+  animation: spin 7s linear infinite;
+}
+
+.track-label {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  background: rgba(30,30,30,0.85);
+  color: #1db954;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 1em;
+  z-index: 20;
+  pointer-events: none;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  display: none;
+}
+
+.record-sleeve:hover .track-label {
+  display: block;
+  transform: rotateY(180deg); /* Компенсация переворота карточки */
+}
+
+.track-label div + div {
+  margin-top: 6px;
+}
+
+/* --- Кастомный дизайн поиска и сортировки --- */
+.filters-panel {
+  gap: 1.2em;
+}
+.search-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.search-icon {
+  position: absolute;
+  left: 14px;
+  font-size: 1.2em;
+  color: #1db954;
+  pointer-events: none;
+  z-index: 2;
+}
+#search-input {
+  padding: 0.5em 1em 0.5em 2.2em;
+  border-radius: 10px;
+  border: 2px solid #232323;
+  background: #181818;
+  color: #fff;
+  font-size: 1.08em;
+  min-width: 220px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+#search-input:focus {
+  border-color: #1db954;
+  box-shadow: 0 0 0 2px #1db95433;
+}
+select {
+  padding: 0.5em 2.2em 0.5em 1em;
+  border-radius: 10px;
+  border: 2px solid #232323;
+  background: #181818 url('data:image/svg+xml;utf8,<svg fill=\"%231db954\" height=\"20\" viewBox=\"0 0 20 20\" width=\"20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M7.293 8.293a1 1 0 011.414 0L10 9.586l1.293-1.293a1 1 0 111.414 1.414l-2 2a1 1 0 01-1.414 0l-2-2a1 1 0 010-1.414z\"/></svg>') no-repeat right 0.8em center/1.2em 1.2em;
+  color: #fff;
+  font-size: 1.08em;
+  min-width: 160px;
+  appearance: none;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+select:focus {
+  border-color: #1db954;
+  box-shadow: 0 0 0 2px #1db95433;
+}
+select option {
+  background: #232323;
+  color: #fff;
+}
+
+@keyframes spin {
+  from {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1) rotate(-360deg);
+  }
+}
+
+.header-minimal {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2.5rem 2rem 1.5rem 2rem;
+  background: none;
+  gap: 2rem;
+}
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.logo-circle {
+  background: #1db954;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+.main-title {
+  font-size: 2rem;
+  color: #fff;
+  font-weight: 700;
+}
+
+footer {
+  text-align: center;
+  padding: 1.5rem 0;
+  background: #121212;
+  color: #888;
+  font-size: 0.9em;
+}

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Groupie Trackers</title>
+  <link rel="stylesheet" href="/statics/style.css">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  </head>
+<body>
+  <header class="header-minimal">
+  <div class="header-brand">
+    <span class="logo-circle">A</span>
+    <span class="main-title">Aldofy</span>
+  </div>
+    <div class="filters-panel" style="margin-bottom: 1.5em; display: flex; flex-wrap: wrap; gap: 1em; align-items: center;">
+      <input type="text" id="search-input" placeholder="Search artist" style="padding: 0.5em 1em; border-radius: 8px; border: none; min-width: 220px; font-size: 1em;">
+      <select id="country-filter" style="padding: 0.5em 1em; border-radius: 8px; border: none; font-size: 1em;">
+        <option value="">All countries</option>
+      </select>
+      <select id="sort-select" style="padding: 0.5em 1em; border-radius: 8px; border: none; font-size: 1em;">
+        <option value="name">Sort: Name (A-Z)</option>
+        <option value="date">Sort: Year</option>
+        <option value="concerts">Sort: Concerts count</option>
+      </select>
+    </div>
+  </header>
+  <main class="content">
+    <h2>Featured Artists</h2>
+    <div class="container" id="artists-container">
+      {{range .}}
+        <div class="record-sleeve"
+             data-country="{{if .Locations}}{{index .Locations 0}}{{end}}"
+             data-cities="{{range $i, $loc := .Locations}}{{if $i}},{{end}}{{$loc}}{{end}}"
+             data-dates="{{range $i, $d := .Dates}}{{if $i}},{{end}}{{$d}}{{end}}"
+             data-year="{{.CreationDate}}"
+             data-concerts="{{len .Dates}}"
+             onclick="openModal({{js .Name}}, {{js .Image}}, {{safeJS (marshal .Members)}}, {{js .FirstAlbum}}, {{.CreationDate}}, {{safeJS (marshal .Dates)}}, {{safeJS (marshal .Relations)}}, {{safeJS (marshal .Locations)}})"
+             onmouseenter="preloadTrack('{{.Name}}', this)"
+             onmouseleave="stopTrack()">
+          <div class="album-art" style="background-image: url('{{.Image}}');"></div>
+          <div class="vinyl">
+            <img class="vinyl-center" src="{{.Image}}" alt="Vinyl Center">
+          </div>
+          <span class="badge album-badge">{{.Name}}</span>
+          <div class="track-label" style="display:none;"></div>
+        </div>
+      {{end}}
+    </div>
+  </main>
+  <footer>
+    <p>&copy; 2025 Groupie Trackers</p>
+  </footer>
+
+  <!-- Modal -->
+  <div id="modal" class="modal" onclick="closeModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-left">
+        <img id="modal-image" src="" alt="Album Cover">
+      </div>
+      <div class="modal-right modal-scroll">
+        <h3 id="modal-name"></h3>
+        <div class="modal-info-grid">
+          <div class="modal-info-label">Members:</div>
+          <div class="modal-info-value" id="modal-members"></div>
+          <div class="modal-info-label">First Album:</div>
+          <div class="modal-info-value" id="modal-album"></div>
+          <div class="modal-info-label">Since:</div>
+          <div class="modal-info-value" id="modal-date"></div>
+        </div>
+        <div class="modal-section">
+          <div class="modal-section-title">Dates:</div>
+          <ul id="modal-dates"></ul>
+        </div>
+        <div class="modal-section">
+          <div class="modal-section-title">Events:</div>
+          <ul id="modal-events"></ul>
+        </div>
+        <div class="modal-section">
+          <div class="modal-section-title">Locations:</div>
+          <ul id="modal-locations"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="/statics/script.js"></script>
+</body>
+</html>
