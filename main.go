@@ -21,6 +21,7 @@ var (
 )
 
 func main() {
+	port := os.Getenv("PORT")
 	mux := http.NewServeMux()
 	fs := http.FileServer(http.Dir("web/statics"))
 	js := http.FileServer(http.Dir("web/statics/js"))
@@ -32,11 +33,10 @@ func main() {
 	mux.HandleFunc("/", rootHandler)
 
 	log.Println("Server started on http://localhost:8080")
-	port := os.Getenv("PORT")
 	if port == "" {
     		port = "8080"
 	}
-	http.ListenAndServe(":" + port, ...)
+	http.ListenAndServe(":" + port, ...,)
 }
 
 func rootHandler(w http.ResponseWriter, r *http.Request) {
